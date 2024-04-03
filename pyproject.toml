@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "gradio-langchain"
+version = "0.1.0"
+description = ""
+authors = ["you <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+gradio = "^4.21.0"
+langchain = "^0.1.12"
+python-dotenv = "^1.0.1"
+openai = "^1.14.0"
+langchain-openai = "^0.0.8"
+numpy = "^1.26.4"
+pillow = "^10.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.2.0"
+flake8 = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
