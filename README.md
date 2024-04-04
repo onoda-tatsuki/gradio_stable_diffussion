@@ -4,13 +4,13 @@ Stability AI APIを使用して画像生成を行う
 
 
 ## 使用方法
-- 必要なライブラリのインストール
+必要なライブラリのインストール
 
 ```bash
 poetry install
 ```
 
-- makeコマンドで実行
+makeコマンドで実行
 
 Stability AI API Core (V2)
 ```bash
@@ -22,7 +22,7 @@ Stability AI API V1 (txt2img)
 make run-v1
 ```
 
-- UI上からプロンプトを入力してボタンを押下 => 画像生成
+UI上からプロンプトを入力してボタンを押下 => 画像生成
 
 ## ローカル環境でStable Diffusionを実行する場合
 自身のPC内でStable Diffusion Web UIをgithubからクローンして  

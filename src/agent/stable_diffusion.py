@@ -87,12 +87,18 @@ class SDCoreGenerator(StableDiffusionGenerator):
         art_style = kwargs.get("art_style", "")
         aspect_ratio = kwargs.get("aspect_ratio", "1:1")
 
+        # art_styleがNoneまたは空白文字列でない場合にのみ、art_styleの情報を含める
+        if art_style:
+            request_prompt = f"({self.quality_prompt}:1.3), " + f"({art_style}:1.4), " + prompt
+        else:
+            request_prompt = f"({self.quality_prompt}:1.3), " + prompt
+
         response = requests.post(
             f"https://api.stability.ai/v2beta/stable-image/generate/core",
             headers={"authorization": self.api_key, "accept": "application/json"},
             files={"none": ""},
             data={
-                "prompt": f"({self.quality_prompt}:1.3), " + f"({art_style}:1.4), "  + f"{prompt}",
+                "prompt": request_prompt,
                 "negative_prompt": self.negative_prompt,
                 "output_format": "webp",
                 "aspect_ratio": aspect_ratio,
@@ -109,7 +115,7 @@ class SDCoreGenerator(StableDiffusionGenerator):
             image_np = np.array(io_image)
 
             self.save_image(decoded_image)
-            
+
         else:
             raise Exception(str(response.json()))
 
@@ -128,6 +134,21 @@ class SDV1Generator(StableDiffusionGenerator):
         height = kwargs.get("height", 512)
         art_style = kwargs.get("art_style", "")
 
+        request_json = {
+            "text_prompts": [
+                {"text": f"{self.quality_prompt}, {prompt}", "weight": 0.7}
+            ],
+            "cfg_scale": 7,
+            "height": height,
+            "width": width,
+            "samples": 1,
+            "steps": 30,
+            "sampler": "DDIM",
+        }
+
+        if art_style:
+            request_json["style_preset"] = art_style
+
         response = requests.post(
             f"{self.api_host}/v1/generation/{self.engine_id}/text-to-image",
             headers={
@@ -135,22 +156,13 @@ class SDV1Generator(StableDiffusionGenerator):
                 "Accept": "application/json",
                 "Authorization": f"Bearer {self.api_key}",
             },
-            json={
-                "text_prompts": [{"text": self.quality_prompt + prompt, "weight": 0.7}],
-                "cfg_scale": 7,
-                "height": height,
-                "width": width,
-                "samples": 1,
-                "steps": 30,
-                "sampler": "DDIM",
-                "style_preset": art_style,
-            },
+            json=request_json,
         )
 
         data = response.json()
 
         if response.status_code != 200:
-            raise Exception("Non-200 response: " + str(response.text))
+            raise Exception("Non-200 response: " + data.get("message"))
 
         output_images = []
 
@@ -174,7 +186,7 @@ class SDLocalGenerator(StableDiffusionGenerator):
         height = kwargs.get("height", 512)
 
         payload = {
-            "prompt": self.quality_prompt + prompt,
+            "prompt": f"{self.quality_prompt}, " + prompt,
             "negative_prompt": self.negative_prompt,
             "steps": 35,
             "width": width,

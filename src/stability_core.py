@@ -31,16 +31,19 @@ model_selector = gr.Radio(
 tmp_slider = gr.Slider(minimum=0, maximum=1, step=0.05, label="Temperature")
 accept_dropdown = gr.Dropdown(
     choices=["16:9", "1:1", "21:9", "2:3", "3:2", "4:5", "5:4", "9:16", "9:21"],
+    value="1:1",
     label="accept ratio",
 )
 styles_dropdown = gr.Dropdown(
     choices=[
+        ("指定なし", ""),
         ("アニメ", "anime style"),
         ("リアル", "realistic"),
         ("ベクターアート", "vector art"),
         ("水彩", "watercolor"),
         ("キアロスクーロ", "chiaroscuro"),
     ],
+    value="",
     label="Art Style",
 )
 

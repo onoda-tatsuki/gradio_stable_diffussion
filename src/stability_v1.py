@@ -6,7 +6,12 @@ from src.agent.sd_prompt import SDPromptGenerator
 
 
 def generate_image(
-    prompt: str, models: str, temperature: int, width: float, height: float, art_style: str
+    prompt: str,
+    models: str,
+    temperature: int,
+    width: float,
+    height: float,
+    art_style: str,
 ):
     generator = SDPromptGenerator(models, temperature)
     response, token_info, images = generator.generate_sd_prompt(
@@ -34,6 +39,7 @@ width_slider = gr.Slider(minimum=128, maximum=2048, step=1, label="Width", value
 height_slider = gr.Slider(minimum=128, maximum=2048, step=1, label="Height", value=512)
 styles_dropdown = gr.Dropdown(
     choices=[
+        ("指定なし", ""),
         ("3Dモデル", "3d-model"),
         ("アナログフィルム", "analog-film"),
         ("アニメ", "anime"),
@@ -42,6 +48,7 @@ styles_dropdown = gr.Dropdown(
         ("ファンタジーアート", "fantasy-art"),
         ("ラインアート", "line-art"),
     ],
+    value="",
     label="Art Style",
 )
 
@@ -53,7 +60,14 @@ total_cost = gr.Textbox(label="Total Cost (chatGPT)")
 
 demo = gr.Interface(
     fn=generate_image,
-    inputs=[prompt_input, model_selector, tmp_slider, width_slider, height_slider, styles_dropdown],
+    inputs=[
+        prompt_input,
+        model_selector,
+        tmp_slider,
+        width_slider,
+        height_slider,
+        styles_dropdown,
+    ],
     outputs=[output_sd_prompt, output_image, total_tokens, total_cost],
 )
 
