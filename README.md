@@ -1,5 +1,5 @@
 # Stable Diffusion + ChatGPTのデモ
-簡単なテキスト入力からStable diffusionのプロンプトを作成した後、  
+簡単なテキスト入力からStable diffusionのプロンプトを作成した後、
 Stability AI APIを使用して画像生成を行う
 
 
@@ -9,6 +9,9 @@ Stability AI APIを使用して画像生成を行う
 ```bash
 poetry install
 ```
+.env.exampleを.envに名前変更
+
+OpenAIとStability AIのAPIを取得し.envファイルへ記載
 
 makeコマンドで実行
 
@@ -25,6 +28,6 @@ make run-v1
 UI上からプロンプトを入力してボタンを押下 => 画像生成
 
 ## ローカル環境でStable Diffusionを実行する場合
-自身のPC内でStable Diffusion Web UIをgithubからクローンして  
+自身のPC内でStable Diffusion Web UIをgithubからクローンして
 環境構築してください。
 その後、stability_v1.pyで関数に渡すapi_versionの値を"local"にすれば実行可能です。
